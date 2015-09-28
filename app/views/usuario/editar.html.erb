@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Inicio</title>
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+	  <div class="container-fluid">
+	  <!--head, with brand-->
+	  	<div class="navbar navbar-header">
+	  		<a class="navbar-brand" href="#">Photolog</a>
+	  	</div>
+
+	  	<!-- links and others -->
+	  	<div class="collapse navbar-collapse">
+	  		<ul class="nav navbar-nav">
+	  			<li><a href="/">Inicio</a></li>
+	  		</ul>
+	  		<ul class="nav navbar-nav navbar-right">
+	  			<li><a href="/registrar">Registrar</a></li>
+	  			<li><a href="/iniciar">Iniciar</a></li>
+	  		</ul>
+	  	</div>
+	  </div>
+	</nav>
+	<div id="main-container" class="container-fluid">
+		<div class="row">
+			<div id="sidebar" class="col-xs-3">
+			<ul class="nav">				
+				<li><%= link_to "Editar", '/editar/' %></li>
+				<li><a href="/amigos">Amigos</a></li>
+				<li><a href="/fotos">Fotos</a></li>
+				<% if is_admin? %>
+					<li><a href="/cuentas">Listado Cuentas</a></li>
+					<li><a href="/crear_cuenta">Crear Cuenta</a></li>
+				<%else %>
+					<li><a href="/transferir">Pagar Gold</a></li>
+				<% end %>
+			</ul>
+			</div>
+			<div id="content" class="col-xs-9">
+				<%= form_for @usuario, :url=>{:action => "cambiar_usuario"} do |f| %>
+					<% if @usuario.errors.any? %>
+						<h2> Hubieron algunos errores en el registro </h2>
+						<ul>
+							<% @usuario.errors.full_messages.each do |message| %>
+							<li><%= message %></li>
+							<% end %>
+						</ul>
+					<% end %>
+					<p>
+						<%= f.label :NOMBRE_USUARIO %> <br>
+						<%= f.text_field :NOMBRE_USUARIO %>
+					</p>
+					<p>
+						<%= f.label :APELLIDO_USUARIO %> <br>
+						<%= f.text_field :APELLIDO_USUARIO %>
+					</p>
+					<p>
+						<%= f.label :EMAIL_USUARIO %> <br>
+						<%= f.text_field :EMAIL_USUARIO %>
+
+					</p>
+					<p>
+						<%= f.label :PASSWORD_USUARIO %> <br>
+						<%= f.text_field :PASSWORD_USUARIO %>
+					</p>
+					<p>
+						<%= f.label :SEXO_USUARIO %> <br>
+						<%= select_tag(:SEXO_USUARIO,options_for_select([['No Especifica','2'],['Hombre','0'],['Mujer','1']]))%>
+					</p>
+					<p>
+						<%= f.label :FECHA_NACIMIENTO %> <br>
+						<%= date_field(:usuario, :FECHA_NACIMIENTO) %>
+					</p>
+					<p>
+						<%= f.submit 'Editar', class: "btn btn-primary"%>
+					</p>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+<style type="text/css">
+	body {padding-top: 70px;}
+</style>

@@ -1,0 +1,31 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  integer: 
+  string: 
+  string: 
+  string: 
+  string: 
+  boolean: 
+  boolean: 
+  boolean: 
+  boolean: 
+  date: 
+  decimal: 
+  date: 
+  boolean: 
+
+two:
+  integer: 
+  string: 
+  string: 
+  string: 
+  string: 
+  boolean: 
+  boolean: 
+  boolean: 
+  boolean: 
+  date: 
+  decimal: 
+  date: 
+  boolean: 

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Inicio</title>
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+	  <div class="container-fluid">
+	  <!--head, with brand-->
+	  	<div class="navbar navbar-header">
+	  		<a class="navbar-brand" href="#">Photolog</a>
+	  	</div>
+
+	  	<!-- links and others -->
+	  	<div class="collapse navbar-collapse">
+	  		<ul class="nav navbar-nav">
+	  			<li><a href="/">Inicio</a></li>
+	  		</ul>
+	  		<% if logged_in? %>
+		  		<ul class="nav navbar-nav navbar-right">
+		  			<li><a href="/cuenta/">Mi Cuenta</a> </li>
+	  				<li><a href="/logout">Salir</a></li>
+		  		</ul>
+	  		<% else %>
+		  		<ul class="nav navbar-nav navbar-right">
+		  			<li><a href="/registrar">Registrar</a></li>
+		  			<li><a href="/iniciar">Iniciar</a></li>
+		  		</ul>
+	  		<% end %>
+	  	</div>
+	  </div>
+	</nav>
+	<div id="main-container" class="container-fluid">
+		<div class="row">
+			<div id="sidebar" class="col-xs-3">
+			<ul class="nav">				
+				<li><a href="/editar">Editar</a></li>
+				<li><a href="/amigos">Amigos</a></li>
+				<li><a href="/fotos">Fotos</a></li>
+				<% if is_admin? %>
+					<li><a href="/cuentas">Listado Cuentas</a></li>
+					<li><a href="/crear_cuenta">Crear Cuenta</a></li>
+				<%else %>
+					<li><a href="/transferir">Pagar Gold</a></li>
+				<% end %>
+			</ul>
+			</div>
+			<div id="content" class="col-xs-9">
+				<p>
+				<div class="row">
+					<h1>
+						<small>
+							<a href="/cuenta/">Mi Cuenta</a> | 
+						</small>
+						<strong>Listado de Cuentas</strong>
+					</h1>
+					
+				</div>	
+				<a href="/agregar_usuario">
+					<button class='btn btn-danger'>
+						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Agregar Usuario
+					</button>
+				</a>
+					<% if @usuarios %>
+					<table class="table">
+						<tr>
+							<th> Titulo </th>
+							<th> Descripcion </th>
+							<th></th>
+						</tr>
+						<% logger.debug 'vista:'<<@usuarios.inspect %>
+						<% @usuarios.each do |usuario|%>
+							<% usu = usuario.deep_symbolize_keys %>
+							<% if usu[:ACTIVO_USUARIO] == "1" %>
+							<tr>	
+								<td><%= usu[:NOMBRE_USUARIO] %> <%= usu[:APELLIDO_USUARIO] %></td>
+								<td>
+									<% if usu[:SEXO_USUARIO] == 1 %>
+										Hombre
+									<% elsif usu[:SEXO_USUARIO] == 0 %>
+										Mujer
+									<% else %>
+										No especifica
+									<% end %>
+								</td>
+								<td><%= usu[:EMAIL_USUARIO] %></td>
+								<td><%= usu[:FECHA_NACIMIENTO] %></td>
+								<td>
+								<% if usu[:GOLD] %>
+
+								<% else %>
+
+								<% end %>
+								</td>
+								<td>
+									<% if usu[:BLOQUEADO]=="1" %>
+									<%= link_to "Desbloquear", '/desbloquear_usuario/'<<usu[:ID_USUARIO] %>
+									<% else %>
+									<%= link_to "Bloquear", '/bloquear_usuario/'<<usu[:ID_USUARIO] %>
+									<% end %>
+									<%= link_to "Eliminar", '/eliminar_usuario/'<<usu[:ID_USUARIO] %>
+								</td>
+							</tr>
+							<% end %>
+						<% end %>
+					</table>
+					<% end %>
+				</p>	
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+<style type="text/css">
+	body {padding-top: 70px;}
+</style>

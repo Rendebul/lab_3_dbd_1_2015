@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Inicio</title>
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+	  <div class="container-fluid">
+	  <!--head, with brand-->
+	  	<div class="navbar navbar-header">
+	  		<a class="navbar-brand" href="#">Photolog</a>
+	  	</div>
+
+	  	<!-- links and others -->
+	  	<div class="collapse navbar-collapse">
+	  		<ul class="nav navbar-nav">
+	  			<li><a href="/">Inicio</a></li>
+	  		</ul>
+	  		<ul class="nav navbar-nav navbar-right">
+	  			<li><a href="/registrar">Registrar</a></li>
+	  			<li class="active"><a href="/iniciar">Iniciar</a></li>
+	  		</ul>
+	  	</div>
+	  </div>
+	</nav>
+	<div id="main-container" class="container-fluid">
+		<div class="row">
+			<div id="sidebar" class="col-xs-3">
+				<%= yield :sideba	r %>
+			</div>
+			<div id="content" class="col-xs-9">
+				<%= form_for :usuario, url: '/iniciar' do |f| %>
+					<p>
+						<%= f.label :email_usuario, class: 'form-control' %> <br>
+						<%= f.text_field :email_usuario, class: 'form-control' %>
+					</p>
+					<p>
+						<%= f.label :password_usuario , class: 'form-control'%> <br>
+						<%= f.password_field :password_usuario , class: 'form-control'%>
+					</p>
+					<p>
+						<%= f.submit "Iniciar", class: "btn btn-primary"%>
+					</p>
+					<p>Usuario nuevo? <li><a href="/registrar"></a></li></p>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+<style type="text/css">
+	body {padding-top: 70px;}
+</style>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Inicio</title>
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+	  <div class="container-fluid">
+	  <!--head, with brand-->
+	  	<div class="navbar navbar-header">
+	  		<a class="navbar-brand" href="#">Photolog</a>
+	  	</div>
+
+	  	<!-- links and others -->
+	  	<div class="collapse navbar-collapse">
+	  		<ul class="nav navbar-nav">
+	  			<li class="active"><a href="/">Inicio</a></li>
+	  		</ul>
+	  		<% if logged_in? %>
+		  		<ul class="nav navbar-nav navbar-right">
+		  			<li><a href="/cuenta/">Mi Cuenta</a></li>
+	  				<li><a href="/logout">Salir</a></li>
+		  		</ul>
+	  		<% else %>	
+		  		<ul class="nav navbar-nav navbar-right">
+		  			<li><a href="/registrar">Registrar</a></li>
+		  			<li><a href="/iniciar">Iniciar</a></li>
+		  		</ul>
+	  		<% end %>
+	  	</div>
+	  </div>
+	</nav>
+	<!-- end of navbar -->
+
+	<div id="main-container" class="container-fluid">
+		<div class="row">
+			<div id="sidebar" class="col-xs-3">
+				<%= yield :sidebar %>
+			</div>
+			<div id="content" class="col-xs-9">
+				<%= form_for :busqueda, url: '/busqueda', html: {class: 'form-inline' } do |f|  %>
+					<div class="form-group">
+						
+						<%= f.label :CAMPO %> 	
+						<%= f.text_field :CAMPO , class: 'form-control'%>
+					</div>					
+					<div class="form-group">
+						<%= f.label :OPCION %> 
+						<%= select_tag(:OPCION,options_for_select([['Nombre','0'],['Correo','1']]), class: 'form-control')%>
+										
+						<%= f.submit 'Buscar', class: "btn btn-primary"%>
+					
+					</div>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+<style type="text/css">
+	body {padding-top: 70px;}
+</style>
+
+

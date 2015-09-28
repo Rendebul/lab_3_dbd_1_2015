@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Inicio</title>
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+	  <div class="container-fluid">
+	  <!--head, with brand-->
+	  	<div class="navbar navbar-header">
+	  		<a class="navbar-brand" href="#">Photolog</a>
+	  	</div>
+
+	  	<!-- links and others -->
+	  	<div class="collapse navbar-collapse">
+	  		<ul class="nav navbar-nav">
+	  			<li><a href="/">Inicio</a></li>
+	  		</ul>
+	  		<% if logged_in? %>
+		  		<ul class="nav navbar-nav navbar-right">
+		  			<li><a href="/cuenta/">Mi Cuenta</a></li>
+	  				<li><a href="/logout">Salir</a></li>
+		  		</ul>
+	  		<% else %>
+		  		<ul class="nav navbar-nav navbar-right">
+		  			<li><a href="/registrar">Registrar</a></li>
+		  			<li><a href="/iniciar">Iniciar</a></li>
+		  		</ul>
+	  		<% end %>
+	  	</div>
+	  </div>
+	</nav>
+	<div id="main-container" class="container-fluid">
+		<div class="row">
+			<div id="sidebar" class="col-xs-3">
+			<ul class="nav">				
+				<li><%= link_to "Editar", '/editar/' %></li>
+				<li><a href="/amigos">Amigos</a></li>
+				<li><a href="/fotos">Fotos</a></li>
+				<% if is_admin? %>
+					<li><a href="/cuentas">Listado Cuentas</a></li>
+					<li><a href="/crear_cuenta">Crear Cuenta</a></li>
+					<li><a href="/auditoria">Auditoria</a></li>
+				<%else %>
+					<li><a href="/transferir">Pagar Gold</a></li>
+				<% end %>
+			</ul>
+			</div>
+			<div id="content" class="col-xs-9">
+				<p>
+					<table>
+						<tr>
+							<h1>Bienvenido:</h1>
+							<%= @usuario.NOMBRE_USUARIO %> <%= @usuario.APELLIDO_USUARIO %>
+						</tr>
+						<tr>	
+							<h3>Fecha Nacimiento:</h3>
+							<%= @usuario.FECHA_NACIMIENTO %>
+						</tr>
+						<tr>	
+							<h3>Email:</h3>
+							<%= @usuario.EMAIL_USUARIO %>
+						</tr>
+						<tr>
+							<h3>Sexo:</h3>
+							<% if @usuario.SEXO_USUARIO==0 %>
+								Mujer
+							<% elsif @usuario.SEXO_USUARIO==1 %>
+								Hombre
+							<% else %>
+								No especifica
+							<% end %>
+
+						</tr>
+						<tr>
+							<h3>Estado gold:</h3>
+							<% if @usuario.GOLD %>
+								Activo <span class="glyphicon glyphicon-star" aria-hidden="true">
+							<% else %>
+								Inactivo
+							<% end %>
+						</tr>						
+					</table>
+				</p>	
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+<style type="text/css">
+	body {padding-top: 70px;}
+</style>

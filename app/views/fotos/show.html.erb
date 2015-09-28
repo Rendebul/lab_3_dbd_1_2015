@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Inicio</title>
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+	  <div class="container-fluid">
+	  <!--head, with brand-->
+	  	<div class="navbar navbar-header">
+	  		<a class="navbar-brand" href="#">Photolog</a>
+	  	</div>
+
+	  	<!-- links and others -->
+	  	<div class="collapse navbar-collapse">
+	  		<ul class="nav navbar-nav">
+	  			<li><a href="/">Inicio</a></li>
+	  		</ul>
+	  		<% if logged_in? %>
+		  		<ul class="nav navbar-nav navbar-right">
+		  			<li><a href="/cuenta/">Mi Cuenta</a> </li>
+	  				<li><a href="/logout">Salir</a></li>
+		  		</ul>
+	  		<% else %>
+		  		<ul class="nav navbar-nav navbar-right">
+		  			<li><a href="/registrar">Registrar</a></li>
+		  			<li><a href="/iniciar">Iniciar</a></li>
+		  		</ul>
+	  		<% end %>
+	  	</div>
+	  </div>
+	</nav>
+	<div id="main-container" class="container-fluid">
+		<div class="row">
+			<div id="sidebar" class="col-xs-3">
+			<ul class="nav">				
+				
+			</ul>
+			</div>
+			<div id="content" class="col-xs-6">
+				<p>
+				<% if logged_in? %>
+
+				<% if !(current_user.ID_USUARIO.equal?(@foto.ID_USUARIO)) %>
+				<%= link_to "Ver más fotos",'/'<<@foto.ID_USUARIO.to_s<<'/fotos' %>
+				<%= link_to "Agregar Amistad",'/agregar_amigo/'<<@foto.ID_USUARIO.to_s %>
+				<br>
+
+				<% else %>
+				<%= link_to "Ver más fotos",'/'<<@foto.ID_USUARIO.to_s<<'/fotos' %>
+				<br>
+				<% end %>
+
+				<% else %>
+				<%= link_to "Ver más fotos",'/'<<@foto.ID_USUARIO.to_s<<'/fotos' %>
+				<% end %>
+				<div class="row">
+					<h1>
+						<strong><%= @foto.TITULO %></strong>
+						<br>
+						<%= image_tag( @foto.NOMBRE_FOTO,size: "400") %>
+						<br>
+						<small>
+							 <%= @foto.DESCRIPCION %>
+						</small>
+						<br>
+					</h1>
+					<h3>
+						<% cali = @calificacion.first %>
+						<% logger.debug "Cali:"<<cali.inspect %>
+						Calificacion: <%= cali["PROMEDIO"] %>
+					</h3>
+					<% if logged_in? %>
+					<% if !(current_user.ID_USUARIO.equal?(@foto.ID_USUARIO)) %>
+						<%= form_for :calificar, url: '/calificar', html: {class: 'form-inline' } do |f| %>
+							<div class="form-group">
+
+								<%= f.label :NOTA %> 
+								<%= select_tag(:NOTA,options_for_select([['1','1'],['2','2'],['3','3'],['4','4'],['5','5']]), class: 'form-control')%>
+							
+							<%= hidden_field(:calificar, :ID_FOTO, :value => @foto.ID_FOTO) %>
+							
+								<%= f.submit "Calificar", class: "btn btn-primary"%>
+							
+							</div>
+						<% end %>
+					<% end %>
+					<% end %>
+					
+				</div>
+				<br>	
+					<% if @comentarios %>
+						<% logger.debug 'vista:'<<@comentarios.inspect %>
+						<% @comentarios.each do |comentario|%>
+							<% c = comentario.deep_symbolize_keys %>
+							<div class="row">
+								
+								<% if c %>	
+										<% if c[:ID_USUARIO] %>
+										<% u = Usuario.find(c[:ID_USUARIO]) %>
+										<% if u.GOLD %>
+											<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+										<% end %> 
+										<%= u.NOMBRE_USUARIO %> <%= u.APELLIDO_USUARIO %>
+										<% if u.GOLD %>
+											<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+										<% end %>
+										<% else %>
+										Anonimo 
+										<% end %> 
+										 comentó: 
+										<br>
+								<% else %>
+
+								<%e end %>
+								<%= c[:COMENTARIO] %>
+							
+							</div>
+							<br><br>
+						<% end %>
+					<% end %>
+					<% if logged_in? %>
+							<%= form_for :comentario, url: '/comentario_usuario' do |f| %>
+							<p>
+								<%= f.label :COMENTARIO%> <br>
+								<%= f.text_area :COMENTARIO, class: 'form-control' %>
+							</p>
+							<%= hidden_field(:comentario, :ID_FOTO, :value => @foto.ID_FOTO) %>
+							<p>
+								<%= f.submit "Comentar", class: "btn btn-primary"%>
+							</p>
+							<% end %>
+					<% else %>
+							<%= form_for :comentario, url: '/comentario_anon' do |f| %>
+							<p>
+
+								<%= f.label :COMENTARIO%> <br>
+								<%= f.text_area :COMENTARIO, class: 'form-control' %>
+							</p>
+							<%= hidden_field(:comentario, :ID_FOTO, :value => @foto.ID_FOTO) %>
+							<p>
+								<%= f.submit "Comentar", class: "btn btn-primary"%>
+							</p>
+							<% end %>
+					<% end %>
+				</p>	
+			</div>
+			<div class="col-xs-3">
+				<table>
+				<tr>	
+					<th>Fotos Amigos:</th>
+				</tr>
+				<% if @fotos_amigos %>
+					<% @fotos_amigos.each do |fotoa|%>
+					<tr>
+							<% fa = fotoa.deep_symbolize_keys %>
+							<td>	
+								<% if fa %>	
+										<%= fa[:NOMBRE_USUARIO] %> <%= fa[:APELLIDO_USUARIO] %>
+										<br>
+										<%= image_tag( fa[:NOMBRE_FOTO], size: "16") %>
+										<br>
+										<%= fa[:TITULO] %>
+										<br>
+										<%= link_to "Ver",'/'<<fa[:ID_USUARIO].to_s<<'/'<<fa[:ID_FOTO] %>
+										
+										<br>
+								<% else %>
+
+								<%e end %>	
+							</td>
+							
+						<br><br>
+					</tr>
+					<% end %>
+				<% end %>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+<style type="text/css">
+	body {padding-top: 70px;}
+</style>

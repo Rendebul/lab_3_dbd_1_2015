@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Inicio</title>
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+	  <div class="container-fluid">
+	  <!--head, with brand-->
+	  	<div class="navbar navbar-header">
+	  		<a class="navbar-brand" href="#">Photolog</a>
+	  	</div>
+
+	  	<!-- links and others -->
+	  	<div class="collapse navbar-collapse">
+	  		<ul class="nav navbar-nav">
+	  			<li><a href="/">Inicio</a></li>
+	  		</ul>
+	  		<% if logged_in? %>
+		  		<ul class="nav navbar-nav navbar-right">
+		  			<li><a href="/cuenta/">Mi Cuenta</a></li>
+	  				<li><a href="/logout">Salir</a></li>
+		  		</ul>
+	  		<% else %>
+		  		<ul class="nav navbar-nav navbar-right">
+		  			<li><a href="/registrar">Registrar</a></li>
+		  			<li><a href="/iniciar">Iniciar</a></li>
+		  		</ul>
+	  		<% end %>
+	  	</div>
+	  </div>
+	</nav>
+	<div id="main-container" class="container-fluid">
+		<div class="row">
+			<div id="sidebar" class="col-xs-3">
+			</div>
+			<div id="content" class="col-xs-9">
+				<p>
+					<table class="table">
+						<% if @usuarios %>
+							<th>Nombre</th>
+							<th>Email</th>
+							<th></th>
+							<% @usuarios.each do |usuario| %>
+								<% usu = usuario.deep_symbolize_keys %>
+								<% logger.debug 'wea: '<<usu.inspect %>
+								<tr>	
+								<th><%= usu[:NOMBRE_USUARIO] %> <%= usu[:APELLIDO_USUARIO] %></th>
+								<th><%= usu[:EMAIL_USUARIO] %></th>
+								<th>
+									<%= link_to "Ver", '/usuario/'<<usu[:ID_USUARIO] %>
+									<% if logged_in? %>
+										<%= link_to "Agregar", '/agregar_amigo/'<<usu[:ID_USUARIO] %>
+									<% end %>
+								</th>
+							</tr>
+
+							<% end %>
+						<% else %>
+							No se encontró coincidencia alguna
+						<% end %>
+					</table>
+				</p>	
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+<style type="text/css">
+	body {padding-top: 70px;}
+</style>

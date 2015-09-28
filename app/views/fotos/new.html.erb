@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Inicio</title>
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+	  <div class="container-fluid">
+	  <!--head, with brand-->
+	  	<div class="navbar navbar-header">
+	  		<a class="navbar-brand" href="#">Photolog</a>
+	  	</div>
+
+	  	<!-- links and others -->
+	  	<div class="collapse navbar-collapse">
+	  		<ul class="nav navbar-nav">
+	  			<li><a href="/">Inicio</a></li>
+	  		</ul>
+	  		<% if logged_in? %>
+		  		<ul class="nav navbar-nav navbar-right">
+		  			<li><a href="/cuenta/">Mi Cuenta</a> </li>
+	  				<li><a href="/logout">Salir</a></li>
+		  		</ul>
+	  		<% else %>
+		  		<ul class="nav navbar-nav navbar-right">
+		  			<li><a href="/registrar">Registrar</a></li>
+		  			<li><a href="/iniciar">Iniciar</a></li>
+		  		</ul>
+	  		<% end %>
+	  	</div>
+	  </div>
+	</nav>
+	<div id="main-container" class="container-fluid">
+		<div class="row">
+			<div id="sidebar" class="col-xs-3">
+			<ul class="nav">				
+				<li><a href="/editar">Editar</a></li>
+				<li><a href="/amigos">Amigos</a></li>
+				<li><a href="/fotos">Fotos</a></li>
+				<% if is_admin? %>
+					<li><a href="/cuentas">Listado Cuentas</a></li>
+					<li><a href="/crear_cuenta">Crear Cuenta</a></li>
+				<%else %>
+					<li><a href="/transferir">Pagar Gold</a></li>
+				<% end %>
+			</ul>
+			</div>
+			<div id="content" class="col-xs-9">
+				<p>
+					<h1>
+						<small>
+							<a href="/cuenta/">Mi Cuenta</a>| 
+							<a href="/fotos">Fotos</a> |
+						</small>
+						<strong>Nueva Foto</strong>
+					</h1>
+					<%= form_for :foto, url: '/subir'	 do |f| %>
+						<p>
+							<%= f.label :TITULO %> <br>
+							<%= f.text_field :TITULO %>
+						</p>
+						<p>
+							<%= f.label :DESCRIPCION %> <br>
+							<%= f.text_field :DESCRIPCION %>
+						</p>
+						<p>
+							<%= f.label :FOTO %>
+							<%= f.file_field :FOTO , accept: "image/*"%>
+						</p>
+						<p>
+							<%= f.submit 'Subir foto', class: 'btn btn-success'%>
+						</p>
+
+					<% end %>
+
+				</p>	
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+<style type="text/css">
+	body {padding-top: 70px;}
+</style>

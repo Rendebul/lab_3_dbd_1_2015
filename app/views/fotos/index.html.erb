@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Inicio</title>
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+	  <div class="container-fluid">
+	  <!--head, with brand-->
+	  	<div class="navbar navbar-header">
+	  		<a class="navbar-brand" href="#">Photolog</a>
+	  	</div>
+
+	  	<!-- links and others -->
+	  	<div class="collapse navbar-collapse">
+	  		<ul class="nav navbar-nav">
+	  			<li><a href="/">Inicio</a></li>
+	  		</ul>
+	  		<% if logged_in? %>
+		  		<ul class="nav navbar-nav navbar-right">
+		  			<li><a href="/cuenta/">Mi Cuenta</a> </li>
+	  				<li><a href="/logout">Salir</a></li>
+		  		</ul>
+	  		<% else %>
+		  		<ul class="nav navbar-nav navbar-right">
+		  			<li><a href="/registrar">Registrar</a></li>
+		  			<li><a href="/iniciar">Iniciar</a></li>
+		  		</ul>
+	  		<% end %>
+	  	</div>
+	  </div>
+	</nav>
+	<div id="main-container" class="container-fluid">
+		<div class="row">
+			<div id="sidebar" class="col-xs-3">
+			<ul class="nav">				
+				<li><a href="/editar">Editar</a></li>
+				<li><a href="/amigos">Amigos</a></li>
+				<li><a href="/fotos">Fotos</a></li>
+				<% if is_admin? %>
+					<li><a href="/cuentas">Listado Cuentas</a></li>
+					<li><a href="/crear_cuenta">Crear Cuenta</a></li>
+					<li><a href="/auditoria">Auditoria</a></li>
+				<%else %>
+					<li><a href="/transferir">Pagar Gold</a></li>
+				<% end %>
+			</ul>
+			</div>
+			<div id="content" class="col-xs-9">
+				<p>
+				<div class="row">
+					<h1>
+						<small>
+							<a href="/cuenta/">Mi Cuenta</a> | 
+						</small>
+						<strong>Fotos</strong>
+					</h1>
+					
+				</div>	
+				<a href="/subir_foto">
+					<button class='btn btn-danger'>
+						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Agregar Foto
+					</button>
+				</a>
+					<% if @fotos %>
+					<table class="table">
+						<tr>
+							<th> Titulo </th>
+							<th> Descripcion </th>
+							<th></th>
+						</tr>
+						<% logger.debug 'vista:'<<@fotos.inspect %>
+						<% @fotos.each do |foto|%>
+							<% f = foto.deep_symbolize_keys %>
+							<% logger.debug 'f:  '<<f.key?(:TITULO).to_s %>
+							<% logger.debug 'value: '<<f[:TITULO].to_s %>
+							<tr>	
+								<th><%= f[:TITULO] %></th>
+								<th><%= f[:DESCRIPCION] %></th>
+								<th>
+									<%= link_to "Ver", '/'<<f[:ID_USUARIO]<<'/'<<f[:ID_FOTO] %>
+									<%= link_to "Eliminar", '/eliminar_foto/'<<f[:ID_FOTO] %>
+
+								</th>
+							</tr>
+						<% end %>
+					</table>
+					<% end %>
+				</p>	
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+<style type="text/css">
+	body {padding-top: 70px;}
+</style>

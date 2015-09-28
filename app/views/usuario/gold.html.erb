@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Obtener Gold</title>
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+	  <div class="container-fluid">
+	  <!--head, with brand-->
+	  	<div class="navbar navbar-header">
+	  		<a class="navbar-brand" href="#">Photolog</a>
+	  	</div>
+
+	  	<!-- links and others -->
+	  	<div class="collapse navbar-collapse">
+	  		<ul class="nav navbar-nav">
+	  			<li><a href="/">Inicio</a></li>
+	  		</ul>
+	  		<% if logged_in? %>
+		  		<ul class="nav navbar-nav navbar-right">
+		  			<li><a href="/cuenta/">Mi Cuenta</a></li>
+	  				<li><a href="/logout">Salir</a></li>
+		  		</ul>
+	  		<% else %>
+		  		<ul class="nav navbar-nav navbar-right">
+		  			<li><a href="/registrar">Registrar</a></li>
+		  			<li><a href="/iniciar">Iniciar</a></li>
+		  		</ul>
+	  		<% end %>
+	  	</div>
+	  </div>
+	</nav>
+	<div id="main-container" class="container-fluid">
+		<div class="row">
+			<div id="sidebar" class="col-xs-3">
+			<ul class="nav">				
+				<li><%= link_to "Editar", '/editar/'%></li>
+				<li><a href="/amigos">Amigos</a></li>
+				<li><a href="/fotos">Fotos</a></li>
+				<% if is_admin? %>
+					<li><a href="/cuentas">Listado Cuentas</a></li>
+					<li><a href="/crear_cuenta">Crear Cuenta</a></li>
+				<%else %>
+					<li><a href="/transferir">Pagar Gold</a></li>
+				<% end %>
+			</ul>
+			</div>
+			<div id="content" class="col-xs-9">
+				<p>
+					<table>
+						<tr>
+							<h1>¿Como comprar una cuenta Gold?</h1>
+							¡Solo sigue estos sencillos pasos!
+						</tr>
+						<tr>	
+							<h3>1.- ¡Registrate!</h3>
+							Debes estar registrado en la pagina
+						</tr>
+						<tr>	
+							<h3>2.-Elige cuantos meses de cuenta Gold deseas abonar.</h3>
+							Por cada mes de gold que desees debes abonar 3000CLP o 30000CLP por un año completo de gold!
+						</tr>
+						<tr>
+							<h3>3.-Deposito o Transferencia Bancaria:</h3>
+							Haz un deposito a la cuenta vista 9-563-51-43657-2 del banco Santander, rut 24.954.964-k y envia el comprobante a ventas@photolog.com.
+							<br>
+							No olvides mencionar la cuenta a la que quieres activarle el estado Gold.
+
+						</tr>
+						<tr>
+							<h3>4.- Espera la confirmacion</h3>
+							Una vez nuestros ejecutivos hayan verificado la transferencia, activarán por sistema el estado Gold a tu cuenta!
+						</tr>
+						<tr>
+							<h3>Su estado actual de cuenta Gold es:</h3>
+							<% if @usuario.GOLD %>
+								Activo <span class="glyphicon glyphicon-star" aria-hidden="true">
+							<% else %>
+								Inactivo
+							<% end %>
+						</tr>						
+					</table>
+				</p>	
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+<style type="text/css">
+	body {padding-top: 70px;}
+</style>
